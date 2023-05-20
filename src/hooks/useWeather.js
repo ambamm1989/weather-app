@@ -5,7 +5,6 @@ const useWeather = (lat, lon, apiKey) => {
   const [forecast, setForecast] = useState(null);
   const [error, setError] = useState(null);
 
-  // Helper function to convert temperature from Kelvin to Fahrenheit
   const convertKelvinToFahrenheit = (kelvin) => {
     return Math.round((kelvin - 273.15) * 9/5 + 32);
   };
@@ -45,7 +44,7 @@ const useWeather = (lat, lon, apiKey) => {
     }
   }, [lat, lon, apiKey]);
 
-  return { weather, forecast, setWeather, setForecast, error };
+  return { weather, forecast, error };
 };
 
 export default useWeather;
