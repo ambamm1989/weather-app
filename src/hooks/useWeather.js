@@ -7,7 +7,7 @@ const useWeather = (lat, lon, apiKey) => {
 
   // Helper function to convert temperature from Kelvin to Fahrenheit
   const convertKelvinToFahrenheit = (kelvin) => {
-    return ((kelvin - 273.15) * 9/5 + 32).toFixed(2);
+    return Math.round((kelvin - 273.15) * 9/5 + 32);
   };
 
   useEffect(() => {
