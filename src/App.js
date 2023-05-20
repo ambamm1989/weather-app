@@ -1,25 +1,50 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import useGeolocation from './hooks/useGeolocation';
+import useWeather from './hooks/useWeather';
 import './App.css';
 
-function App() {
+const App = () => {
+  const { loaded, coordinates } = useGeolocation();
+  const { weather, forecast } = useWeather(coordinates.lat, coordinates.lon);
+
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  const formatForecastDate = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  };
+
+  const roundTemperature = (temp) => {
+    return Math.ceil(temp);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container background">     
+     <div className="weather-container">
+        <h2 className="weather-title">Today's Weather</h2>
+        {weather && (
+          <div className="current-weather">
+            <h3 className="weather-temp">{roundTemperature(weather.main.temp)}°F</h3>
+            <p className="weather-description">{capitalizeFirstLetter(weather.weather[0].description)}</p>
+          </div>
+        )}
+      </div>
+      <div className="forecast-container">
+        {forecast &&
+          forecast.list
+            .filter((_, i) => i % 8 === 0)
+            .map((weather, i) => (
+              <div key={i} className="forecast-item">
+                <div className="forecast-date">{formatForecastDate(weather.dt_txt)}</div>
+                <div className="forecast-temp">{roundTemperature(weather.main.temp)}°F</div>
+                <div className="forecast-description">{capitalizeFirstLetter(weather.weather[0].description)}</div>
+              </div>
+            ))}
+      </div>
     </div>
   );
-}
+};
 
 export default App;
