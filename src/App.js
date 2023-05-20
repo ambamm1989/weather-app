@@ -5,28 +5,24 @@ import './App.css';
 
 const App = () => {
   const { loaded, coordinates, error } = useGeolocation();
-
-  // Only call useWeather when the coordinates are available
-  const { weather, forecast } = loaded ? useWeather(coordinates.lat, coordinates.lon) : { weather: null, forecast: null };
+  const { weather, forecast } = useWeather(
+    coordinates?.lat, 
+    coordinates?.lon
+  );
 
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
-  if (!loaded) {
+  if (!loaded || !weather || !forecast) {
     return <div>Loading...</div>;
-  } 
-  const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+  }
 
+  const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
   const formatForecastDate = (dateStr) => {
     const date = new Date(dateStr);
     return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   };
-
-  console.log('Location data:', { loaded, coordinates, error });
-console.log('Weather data:', { weather, forecast });
-
-
   const roundTemperature = (temp) => Math.ceil(temp);
 
   return (
