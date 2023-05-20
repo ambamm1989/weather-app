@@ -7,7 +7,7 @@ const App = () => {
   const [locationInput, setLocationInput] = useState("");
   const [manualCoordinates, setManualCoordinates] = useState(null);
   const { loaded, coordinates, error } = useGeolocation();
-  const openWeatherMapApiKey = "YOUR_OPENWEATHERMAP_API_KEY"; // Replace with your actual OpenWeatherMap API key
+  const openWeatherMapApiKey = process.env.REACT_APP_OPENWEATHERMAP_API_KEY; // Replace with your actual OpenWeatherMap API key
   const { weather, forecast, setWeather, setForecast } = useWeather(
     manualCoordinates ? manualCoordinates.lat : coordinates?.lat,
     manualCoordinates ? manualCoordinates.lon : coordinates?.lon,
@@ -82,7 +82,7 @@ const App = () => {
         )}
       </div>
       <div className="forecast-container">
-        {forecast &&
+      {forecast &&
           forecast.list
             .filter((_, i) => i % 8 === 0)
             .map((weather, i) => (
