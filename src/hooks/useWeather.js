@@ -5,6 +5,11 @@ const useWeather = (lat, lon, apiKey) => {
   const [forecast, setForecast] = useState(null);
   const [error, setError] = useState(null);
 
+  // Helper function to convert temperature from Kelvin to Fahrenheit
+  const convertKelvinToFahrenheit = (kelvin) => {
+    return ((kelvin - 273.15) * 9/5 + 32).toFixed(2);
+  };
+
   useEffect(() => {
     const fetchWeather = async () => {
       try {
@@ -14,11 +19,19 @@ const useWeather = (lat, lon, apiKey) => {
         );
         const weatherData = await weatherResponse.json();
 
+        // Convert temperature to Fahrenheit
+        weatherData.main.temp = convertKelvinToFahrenheit(weatherData.main.temp);
+
         // Fetch weather forecast
         const forecastResponse = await fetch(
           `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`
         );
         const forecastData = await forecastResponse.json();
+
+        // Convert forecast temperatures to Fahrenheit
+        forecastData.list.forEach((item) => {
+          item.main.temp = convertKelvinToFahrenheit(item.main.temp);
+        });
 
         setWeather(weatherData);
         setForecast(forecastData);
