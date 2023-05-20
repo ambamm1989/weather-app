@@ -17,11 +17,11 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('../public/images/weather-app-bg.jpg') no-repeat center center fixed;
+    background: url('../images/weather-app-bg.jpg') no-repeat center center fixed;
     background-size: cover;
     z-index: -1;
   }
-        .app-title {
+  .app-title {
     font-size: 32px;
     margin-bottom: 20px;
     color: black;

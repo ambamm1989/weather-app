@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 const useGeolocation = () => {
   const [location, setLocation] = useState({
     loaded: false,
-    coordinates: { lat: "", lon: "" },
+    coordinates: { lat: null, lon: null },
   });
 
   const onSuccess = (location) => {
@@ -19,6 +19,7 @@ const useGeolocation = () => {
   const onError = (error) => {
     setLocation({
       loaded: true,
+      coordinates: { lat: null, lon: null }, // set coordinates to { lat: null, lon: null } on error
       error,
     });
   };
